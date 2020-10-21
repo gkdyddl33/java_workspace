@@ -5,5 +5,7 @@ class UseCat{
 		System.out.println("고양이 이름: ",c.name);
 		System.out.println("고양이 나이: ",c.age);
 		System.out.println("고양이 결혼: ",c.ismarry);
+		walk();
+		cry();
 	}
 }

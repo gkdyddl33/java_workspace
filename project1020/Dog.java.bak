@@ -1,0 +1,15 @@
+class Dog{
+	String name="도그";
+	int age=5;
+	public void bark(){
+		System.out.println("웍웍");
+	}
+
+	public static void main(String[] args){
+		 int a= 8;
+		 Dog d1 = new Dog();
+		 Dog d2 = new Dog();
+
+		 boolean k = true;
+	}
+}

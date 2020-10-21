@@ -5,10 +5,20 @@ class Dog{
 	1) 변수(property)
 	2) 함수(method)
 	*/
-	// 색상 - 상태(변수)
-	// 이름 - 상태(변수)
-	// 나이 - 상태(변수)
+	// Tip. String은 객체자료형이다.(char의 집합)
+
+	String color ="white";		// 색상 - 상태(변수)
+	String name ="뽀미"	// 이름 - 상태(변수)
+	int age = 9;	// 나이 - 상태(변수)
+	
 	// 짖는다 - 동작(함수)
+	public void bark(){// 반환형이 없는 함수는 void를 명시
+		System.out.println("웍웍");
+	}
+
 	// 뛴다 - 동작(함수)
+	public void run(){
+		System.out.println("강아지가 뛰어요");	
+	}
 	
 

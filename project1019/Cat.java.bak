@@ -7,6 +7,15 @@
 °È´Â µ¿ÀÛ
 ¿ì´Â µ¿ÀÛ
 */
-class{
-	
+class Cat{
+	String name = "¹¦";
+	int age = 3;
+	String ismarry = "¹ÌÈ¥";
+
+	public void walk(){
+		System.out.println("ÅÍ¹÷ ÅÍ¹÷..");
+	}
+	public void cry(){
+		System.out.println("³©³© ³¢ÀÌÀ×..");
+	}
 }

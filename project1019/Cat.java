@@ -10,7 +10,7 @@
 class Cat{
 	String name = "นฆ";
 	int age = 3;
-	String ismarry = "นฬศฅ";
+	boolean ismarry = false;
 
 	public void walk(){
 		System.out.println("ลอน๗ ลอน๗..");
