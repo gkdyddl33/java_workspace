@@ -27,6 +27,7 @@ public class App1 {
 		Frame frame =  new Frame();
 		
 		// 프레임은 디폴트가 눈에 보이지 않는 상태임. 따라서 메소드를 호출해야 한다.
+		
 		frame.setVisible(true); // window 객체로부터 상속받은 메서드
 								// 매개변수로는 논리값을 사용할 수 있다.
 		frame.setSize(300, 400); // 윈도우의 너비와 넓이를 지정
