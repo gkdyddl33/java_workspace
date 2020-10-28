@@ -45,7 +45,7 @@ public class ChatClient extends JFrame implements KeyListener{
 		t_input.setPreferredSize(new Dimension(265,30));
 		
 		// (**) 보여주기 전에 미리 연결해놓자(컴포넌트와 리스너 연결)
-		MyActionListener listener = new MyActionListener(bt);
+		MyActionListener listener = new MyActionListener(t_input,area);
 		bt.addActionListener(listener);
 		t_input.addKeyListener(this); // 내가 리스너다. -> 내가 윈도우에 있음
 													// 프레임에 엔터를 치기 때문에!!!!
