@@ -71,12 +71,16 @@ public class ChatClient2 extends JFrame implements KeyListener{
 		// System.out.println(key+"키 눌렀어?");
 		if(key==10) {
 			// (****)
-			String msg = t_input.getText(); // 내용을 반환해주는 함수
-			
-			// System.out.println("area에 추가");
-			area.append(msg+"\n");	// (****) 텍스트 필드 값을 구해서 추가를 하자.
-			t_input.setText(""); 
+//			String msg = t_input.getText(); // 내용을 반환해주는 함수
+//			
+//			// System.out.println("area에 추가");
+//			area.append(msg+"\n");	// (****) 텍스트 필드 값을 구해서 추가를 하자.
+//			t_input.setText("");
+			send();
 		}
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 	public void send() {// 새로시작(4)
 		// 나에대한 처리
@@ -87,9 +91,6 @@ public class ChatClient2 extends JFrame implements KeyListener{
 		// 형님창에 대한 처리
 		ch.area.append(msg+"\n");
 		ch.t_input.setText("");
-	}
-	@Override
-	public void keyTyped(KeyEvent e) {
 	}
 	// (5) 동생은 main이 필요없다.
 }

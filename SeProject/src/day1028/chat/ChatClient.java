@@ -82,11 +82,12 @@ public class ChatClient extends JFrame implements KeyListener,ActionListener{
 		// System.out.println(key+"키 눌렀어?");
 		if(key==10) {
 			// (****)
-			String msg = t_input.getText(); // 내용을 반환해주는 함수
-			
-			// System.out.println("area에 추가");
-			area.append(msg+"\n");	// (****) 텍스트 필드 값을 구해서 추가를 하자.
-			t_input.setText(""); 
+//			String msg = t_input.getText(); // 내용을 반환해주는 함수
+//			
+//			// System.out.println("area에 추가");
+//			area.append(msg+"\n");	// (****) 텍스트 필드 값을 구해서 추가를 하자.
+//			t_input.setText("");
+			send();
 		}
 	}
 	
