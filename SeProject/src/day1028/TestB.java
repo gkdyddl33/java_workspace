@@ -1,4 +1,4 @@
-package day1028.gui;
+package day1028;
 
 public class TestB extends TestA {
 	public void start() {
