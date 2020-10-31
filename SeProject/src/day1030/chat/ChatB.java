@@ -61,8 +61,7 @@ public class ChatB extends JFrame implements KeyListener,ActionListener{
 		
 		// 새로시작(2) send버튼, open 버튼에 리스너 연결
 		bt.addActionListener(this); // 현재 프레임이 곧 리스너이다.
-		
-		
+				
 		
 		//setSize(300,400); -> 해당 코드를 아래코드로 수정 = 내가 원하는 위치에 띄게
 		setBounds(500,150,300,400);
@@ -122,15 +121,10 @@ public class ChatB extends JFrame implements KeyListener,ActionListener{
 		// (4) 너에대한 채팅창.. -> 형님도 처리.class
 		// msg = ch2.t_input.getText();	// 너의. 라는게 들어가야됨	
 		chatA.area.append(msg+"\n");
-		chatC.area.append(msg+"\n");
+		chatC.area.append(msg+"\n");		
+		
+	}
 
-	}
-	// (3) 메시지창에 상대방 윈도우 띄우기 = 메소드 호출 만들기
-	public void open() {
-		// ChatClient2 를 화면에 띄우기
-		//ch2 = new ChatClient2(this);	 // (5)생성자만 띄우면 다시는 쓸수 없기에 변수 선언	
-	}
-	
 	// ---------> 세터추가	
 	public void setChatA(ChatA chatA) {
 		this.chatA = chatA;
