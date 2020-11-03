@@ -72,13 +72,13 @@ public class FileTest {
 			System.out.println("해당 경로에 파일이 존재하지 않습니다.");
 		}
 		
-		BufferedWriter bw = new BufferedWriter(new FileWriter("test.txt"));
+		//BufferedWriter bw = new BufferedWriter(new FileWriter("test.txt"));
 		bw.write(result);
 		bw.close();
 		
 		// (3)행복 : 삭제하기
-		BufferedReader br = null;
-		String result = "";	
+		//BufferedReader br = null;
+		//String result = "";	
 		try {
 			br = new BufferedReader(new FileReader("test.txt"));
 			String line = "";
@@ -98,7 +98,7 @@ public class FileTest {
 			System.out.println("해당 경로에 파일이 존재하지 않습니다.");
 		}
 		
-		BufferedWriter bw = new BufferedWriter(new FileWriter("test.txt"));
+		//BufferedWriter bw = new BufferedWriter(new FileWriter("test.txt"));
 		bw.write(result);
 		bw.close();
 		
