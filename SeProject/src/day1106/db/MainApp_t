@@ -1,0 +1,73 @@
+/*
+ * 응용어플리케이션에서 페이지 전환 방법을 학습해보자
+ * */
+package day1109.page;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class MainApp extends JFrame{
+	JPanel p_north;
+	JPanel p_center; //여기에 페이지들이 위치함!
+	
+	JButton[] btn = new JButton[4];
+	String[] title = {"Home","게시판","로그인","회원가입"};
+	
+	/*4개의 준비된 페이지*/
+	Home home;
+	Board board;
+	Login login;
+	Member member;
+	
+	public MainApp() {
+		p_north = new JPanel();
+		p_center = new JPanel();
+		
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(title[i]);
+			p_north.add(btn[i]);//북쪽 패널에 버튼 부착!
+		}
+		add(p_north, BorderLayout.NORTH);
+		add(p_center); //페이지 컨테이너를 센터에 부착
+		
+		//페이지 생성 
+		home = new Home();
+		board = new Board();
+		login = new Login();
+		member = new Member();
+		//페이지 스타일 설정
+		home.setPreferredSize(new Dimension(580, 480));
+		board.setPreferredSize(new Dimension(580, 480));
+		login.setPreferredSize(new Dimension(580, 480));
+		member.setPreferredSize(new Dimension(580, 480));
+		
+		//센터영역에 4개의 준비된 페이지를 붙여넣자!!
+		p_center.add(home);
+		p_center.add(board);
+		p_center.add(login);
+		p_center.add(member);
+		
+		setVisible(true);
+		pack();//내용물의 크기만큼 수축!!
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+	}
+	
+	public static void main(String[] args) {
+		new MainApp();
+
+	}
+
+}
+
+
+
+
+
+
+
