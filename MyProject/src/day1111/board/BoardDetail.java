@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -59,14 +60,52 @@ public class BoardDetail extends JPanel {
 		bt_list.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// 갱신
+				BoardList boardList = (BoardList)boardApp.getPages(BoardApp.BOARD_LIST);
+				boardList.getList();// 리스트 갱신
+				
 				// 목록으로 가기 구현
 				boardApp.setPage(BoardApp.BOARD_LIST);
 			}
 		});
+		
+		// ** 삭제버튼과 리스너 연결
+		bt_del.addActionListener((e)->{
+			int res = JOptionPane.showConfirmDialog(this, "삭제하시겠습니까?");
+			if(res==JOptionPane.OK_OPTION) {// ok옵션이라면..
+				int result = del(board.getBoard_id());
+				if(result==0) {
+					JOptionPane.showMessageDialog(this, "삭제실패");
+				}else {
+					JOptionPane.showMessageDialog(this, "삭제성공");
+					BoardList boardList = (BoardList)boardApp.getPages(BoardApp.BOARD_LIST);
+					boardList.getList();// 리스트 갱신
+					//목록으로 보여주기
+					boardApp.setPage(BoardApp.BOARD_LIST);
+				}
+			}
+		});
+		
+		// ** 수정버튼과 리스너 연결
+		bt_edit.addActionListener((e)->{
+			int result = edit(board);
+			if(result==0) {
+				JOptionPane.showMessageDialog(this, "수정실패");
+			}else {
+				JOptionPane.showMessageDialog(this, "수정성공");			
+				BoardList boardList = (BoardList)boardApp.getPages(BoardApp.BOARD_LIST);
+				boardList.getList();// 리스트 갱신
+				//목록으로 보여주기
+				boardApp.setPage(BoardApp.BOARD_LIST);
+			}
+		});
+		
+		
 	}	
 	
 	// 한건 가져오기!! -> 게시목록 내용을 클릭하면 상세보기
 	public void getDetail(int board_id) {
+
 		// ★ 테이블생성 클래스 가져오기
 //		Board board;
 		
@@ -106,6 +145,84 @@ public class BoardDetail extends JPanel {
 					e.printStackTrace();
 				}
 			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public int del(int board_id) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String sql = "delete from board where board_id="+board_id;
+		try {
+			pstmt = con.prepareStatement(sql);
+			result = pstmt.executeUpdate();			
+/*			if(result==0) {
+				JOptionPane.showMessageDialog(this, "삭제실패");
+			}else {
+				JOptionPane.showMessageDialog(this, "삭제성공");
+				BoardList boardList = (BoardList)boardApp.getPages(BoardApp.BOARD_LIST);
+				boardList.getList();// 리스트 갱신
+				//목록으로 보여주기
+				boardApp.setPage(BoardApp.BOARD_LIST);
+			}*/
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt !=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
+	public int edit(Board board) {// 날개로 전달하지 말고, 1건의 게시물을 담고있는 인스턴스를 전달하자.
+		PreparedStatement pstmt=null;
+		int result=0;
+		String sql = "update board set title =?,content=? where board_id=?"; // 현재글 board_id
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			// 기존 board가 아니라 우리가 입력한 값을 대체!!
+			pstmt.setString(1, t_title.getText());
+			pstmt.setString(2, content.getText());
+			pstmt.setInt(3, board.getBoard_id());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			if(pstmt !=null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+		
+	}
+	// 조회수 hit 증가
+	public void updateHit(int board_id) {
+		PreparedStatement pstmt = null;
+		String sql = "update board set hit =hit+1 where board_id="+board_id;	// board_id=내가본글
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			int result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
 			if(pstmt != null) {
 				try {
 					pstmt.close();

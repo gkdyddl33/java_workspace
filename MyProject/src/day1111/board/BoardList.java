@@ -27,6 +27,7 @@ public class BoardList extends JPanel{
 	BoardModel boardModel;
 	
 	Connection con;
+	Board board;
 	
 	public BoardList(BoardApp boardApp) {
 		this.boardApp=boardApp;
@@ -66,7 +67,7 @@ public class BoardList extends JPanel{
 				BoardDetail boardDetail = (BoardDetail)boardApp.getPages(boardApp.BOARD_DETAIL);
 				String board_id = (String)table.getValueAt(table.getSelectedRow(), 0); // 선택한 row, 모든 컬럼 0
 				boardDetail.getDetail(Integer.parseInt(board_id));
-				
+				boardDetail.updateHit(board.getBoard_id());
 				// 칸을 마우스로 누르면 넘어가기
 				boardApp.setPage(boardApp.BOARD_DETAIL);
 			}
