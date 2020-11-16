@@ -9,7 +9,7 @@ public class Mountain {
 	private int mntnid;	// 산의 고유코드
 	private String mntnnm;	// 산이 담게 될 변수
 	private String mntninfopoflc;	// 산정보소재지(소재지)
-	private String mntninfohght;	// 산높이
+	private int mntninfohght;	// 산높이
 	
 	public int getMntnid() {
 		return mntnid;
@@ -29,10 +29,10 @@ public class Mountain {
 	public void setMntninfopoflc(String mntninfopoflc) {
 		this.mntninfopoflc = mntninfopoflc;
 	}
-	public String getMntninfohght() {
+	public int getMntninfohght() {
 		return mntninfohght;
 	}
-	public void setMntninfohght(String mntninfohght) {
+	public void setMntninfohght(int mntninfohght) {
 		this.mntninfohght = mntninfohght;
 	}	
 	
