@@ -44,25 +44,25 @@ public class DownLoader extends JFrame{
 		
 		bar.setFont(new Font("Verdana", Font.BOLD, 25));
 		bar.setStringPainted(true);	// 몇 퍼센트 숫자 보임
-		bar.setValue(35);	// 채워짐
+		//bar.setValue(35);	// 채워짐
 		
 		bar.setPreferredSize(new Dimension(580,45));
 		bar.setForeground(Color.CYAN);
 		bar.setBackground(Color.BLACK);		
 		
-		parsingThread = new Thread() {			
-			public void run() {
-				parseData();	// 순서없이 진행되는 동기 방식
-				// 총 몇건이 존재하는지 출력
-				System.out.println(movieHandler.movieList.size()); // 7이 나온다 그럼 반복문 사용
-				for (int i = 0; i < movieHandler.movieList.size(); i++) {
-					Movie movie = movieHandler.movieList.get(i);
-					download(movie.getUrl());
-				}
-			}
-		};
 		// 다운로드 버튼과 리스너 연결
 		bt_down.addActionListener((e)->{
+			parsingThread = new Thread() {			
+				public void run() {
+					parseData();	// 순서없이 진행되는 동기 방식
+					// 총 몇건이 존재하는지 출력
+					System.out.println(movieHandler.movieList.size()); // 7이 나온다 그럼 반복문 사용
+					for (int i = 0; i < movieHandler.movieList.size(); i++) {
+						Movie movie = movieHandler.movieList.get(i);
+						download(movie.getUrl());
+					}
+				}
+			};
 			parsingThread.start();
 		});
 		
@@ -95,7 +95,9 @@ public class DownLoader extends JFrame{
 	public void download(String path) {// 매개변수로 가져올 자원을 지정한다.
 		InputStream is = null;
 		FileOutputStream fos = null;	// 외부의 다운로드 파일을 저장할 가져올 스트림
-		int count = 0;
+		int readCount = 0;	// 현재까지 읽은 바이트 수
+		int total = 0;	// 다운로드 받을 자원의 총 바이트 수 *
+		bar.setValue(0);	// 초기화
 		
 		try {
 			URL url = new URL(path);
@@ -105,16 +107,25 @@ public class DownLoader extends JFrame{
 			HttpURLConnection http = (HttpURLConnection)con;	
 			http.setRequestMethod("GET");
 			
+			// * 커넥션 객체를 이용하면, 대상 자원의 크기까지 얻어올 수 있다.
+			total = con.getContentLength();	// 연결된 자원의 총 바이트 반환!
+			
+			
 			is = http.getInputStream();	// 연결된 URL 로부터 입력스트림 얻기!!
 			long time = System.currentTimeMillis();	// 파일명으로 사용하자 - 시간
-			String ext = FileManager.getExtend(path);	// 확장자
+			String ext = FileManager.getExtend2(path);	// * 확장자 제대로 가져오기!
 			String filename = time +"."+ext;	// 최종적으로 부여된 파일명
+			System.out.println("생성된 파일명은 "+ filename);
 			
 			fos = new FileOutputStream("D:/workspace/java_workspace/MyProject/res/download/"+filename);
 			int data = -1;
 			while(true) {
 				data = is.read();
-				bar.setValue(count++); // ★ 여기서 과제!! bar를 움직여보자!!
+				readCount++;
+				
+				// float -> int 형변환
+				bar.setValue((int)getPercent(readCount, total)); // ★ 여기서 과제!! bar를 움직여보자!!
+				System.out.println((int)getPercent(readCount, total));
 				if(data==-1)break;
 				fos.write(data);
 			}			
@@ -137,7 +148,11 @@ public class DownLoader extends JFrame{
 			}
 		}
 	}
-	
+	// * 퍼센트구하는 메서드 정의
+	public float getPercent(int read, float total) {
+		// 읽은 수 / 총 바이트 수 * 100		
+		return (read/total)*100;
+	}
 	public static void main(String[] args) {
 		new DownLoader();
 	}
