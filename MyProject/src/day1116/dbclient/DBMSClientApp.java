@@ -66,7 +66,8 @@ public class DBMSClientApp extends JFrame{
 	
 	// 6) 선택한 테이블에 대한 레코드 출력에 필요한 벡터들
 	Vector recordList = new Vector();
-	// -------------------------- 벡터를 계속 만들어서 끌구 가기에는 너무 속상하다..
+	// -------------------------- 사용자 로그인이 누구일지 모르는 상황에서 벡터를 준비해 놓는 하드 코딩은
+	// 										올바르지 않다. 동적으로 해야 한다. 이것은 속상한 코딩.. 해결책을 찾아보자.
 	Vector productColumn = new Vector();
 	Vector empColumn = new Vector();
 	
