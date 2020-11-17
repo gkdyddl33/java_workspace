@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -37,11 +39,12 @@ import javax.swing.JTable;
 public class DBMSClientApp extends JFrame{
 
 	JPanel p_west;
-	Choice ch_users;	// 유저명이 출력될 초이스 컴포넌트
-	JPasswordField t_pass;	// 비밀번호 텍스트 필드
-	JButton bt_login;	// 접속 버튼
+	Choice ch_users;	
+	JPasswordField t_pass;	
+	JButton bt_login;	
 		
-	JPanel p_center;	// 그리드 적용
+	JPanel p_center;	
+	JPanel p_upper;	// 테이블과 시퀀스를 포함할 패널
 	JTable t_tables;	// 유저의 테이블 정보를 출력한 JTable
 	JTable t_seq;	// 유저의 시퀀스 정보를 출력한 JTable
 	JScrollPane s1,s2;
@@ -55,7 +58,17 @@ public class DBMSClientApp extends JFrame{
 	
 	// 4) 테이블 출력할 벡터
 	Vector tableList = new Vector();	// 또 다른 벡터가 들어갈..이차원 배열과 동일..
-	Vector<String> columnList = new Vector<>();	// 컬럼명은 String..
+	Vector<String> tableColumn = new Vector<>();	// 컬럼명은 String..
+	
+	// 5) 시퀀스에 필요한 벡터
+	Vector seqList = new Vector();
+	Vector<String> seqColumn = new Vector<>();
+	
+	// 6) 선택한 테이블에 대한 레코드 출력에 필요한 벡터들
+	Vector recordList = new Vector();
+	// -------------------------- 벡터를 계속 만들어서 끌구 가기에는 너무 속상하다..
+	Vector productColumn = new Vector();
+	Vector empColumn = new Vector();
 	
 	public DBMSClientApp() {
 		// 생성
@@ -64,11 +77,22 @@ public class DBMSClientApp extends JFrame{
 		t_pass = new JPasswordField();
 		bt_login = new JButton("접속");
 		
-		p_center = new JPanel();
-		p_center.setLayout(new GridLayout(2,1));	
-		t_tables = new JTable(tableList, columnList);	// 4) 초기 벡터값을 넣어주세요. 추후 메서드 호출시 크기가 변경될 것이고
+		p_center = new JPanel();		
+		p_upper = new JPanel();
+		p_center.setLayout(new GridLayout(3,1));
+		p_upper.setLayout(new GridLayout(1,2));
+		
+		// 4-2) 컬럼(제목)정보 초기화하기 -> 테이블 구조를 보이게 하기 위해 위치를 올리자.!
+		tableColumn.add("table_name");
+		tableColumn.add("tablespace_name");
+		
+		t_tables = new JTable(tableList, tableColumn);	// 4) 초기 벡터값을 넣어주세요. 추후 메서드 호출시 크기가 변경될 것이고
 																			//		JTable을 새로고침 하면 되겟져?
-		t_seq = new JTable();
+		
+		seqColumn.add("sequence_name");
+		seqColumn.add("last_number");
+		t_seq = new JTable(seqList,seqColumn);		// 5) 시퀀스 생성자에 벡터 적용하기(제목)
+		
 		s1 = new JScrollPane(t_tables);
 		s2 = new JScrollPane(t_seq);
 		
@@ -81,13 +105,17 @@ public class DBMSClientApp extends JFrame{
 		p_west.add(ch_users);
 		p_west.add(t_pass);
 		p_west.add(bt_login);
-		p_center.add(s1);
-		p_center.add(s2);
+		p_upper.add(s1);
+		p_upper.add(s2);
+		p_center.add(p_upper); // 추가로 인해 3층으로 변함
+				
 		add(p_west,BorderLayout.WEST);
 		add(p_center);
 				
+		
 		setVisible(true);
-		setSize(700,350);	
+		setSize(700,750);	
+		
 		// 윈도우 어댑터 구현하여 닫을게 있다면 닫는 처리로 진행!
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -100,15 +128,25 @@ public class DBMSClientApp extends JFrame{
 		bt_login.addActionListener((e)->{
 			login();
 		});
+		
+		// 테이블과 리스너 연결
+		t_tables.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// 선택한 좌표의 테이블명 얻기
+				int row = t_tables.getSelectedRow();
+				int col = t_tables.getSelectedColumn();
+				//t_tables.getValueAt(row, col);	// 선택한 row, 선택한 column
+				System.out.println(t_tables.getValueAt(row, col));
+			}
+		});
+		
 		setLocationRelativeTo(null);
 		
 		// 호출
 		connect();
 		getUserList();
 		
-		// 4-2) 컬럼정보 초기화하기
-		columnList.add("table_name");
-		columnList.add("tablespace_name");
 	}
 	
 	// 1) 오라클 접속
@@ -173,13 +211,13 @@ public class DBMSClientApp extends JFrame{
 	}
 	
 	// 3) 유저목록 선택 후 로그인
-	public void login() {
-		// 현재 유지되고 있는 접속 객체인 connection을 끊고 다른 유저로 접속을 시도!
+	public void login() {		
 		disConnect();
 		user = ch_users.getSelectedItem();	// 현재 초이스 컴포넌트에 선택된 아이템 값!
-		password = new String(t_pass.getPassword());	// 비밀번호 설정
-		connect();	// 현재 멤버변수에 system 으로 되어 있으므로 초이스 값으로 교체
+		password = new String(t_pass.getPassword());	
+		connect();
 		getTableList();	// 로그인 하자마자. 이 사람의 테이블 정보를 보여주자.
+		getSequList();
 		System.out.println("보유한 테이블 "+tableList.size());  // ★ 갱신에 문제가 잇음
 	}
 	
@@ -202,6 +240,8 @@ public class DBMSClientApp extends JFrame{
 			// 컬럼 정보는 어떻게 가져올까요? 2개밖에 없으니고정하면 되겠죠?
 			// 위에 생성자에서 new 하고 여기서는 갱신을 하자!
 			t_tables.updateUI();
+			// * 테이블의 레코드와 컬럼갯수 확인 - 갱신문제 해결
+			System.out.println("컬럼수는:"+t_tables.getColumnCount()); // 컬럼수가 0이다..올리자
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -223,6 +263,45 @@ public class DBMSClientApp extends JFrame{
 		}
 	}
 	
+	// 5) 시퀀스 가져오기 -> 레이아웃 변경후 
+	public void getSequList() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select sequence_name,last_number from user_sequences";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Vector vec = new Vector();
+				vec.add(rs.getString("sequence_name"));
+				vec.add(rs.getString("last_number"));
+				seqList.add(vec);				
+			}
+			t_seq.updateUI();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
 	public static void main(String[] args) {
 		new DBMSClientApp();
 	}
