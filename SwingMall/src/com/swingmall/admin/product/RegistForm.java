@@ -5,22 +5,23 @@ package com.swingmall.admin.product;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.swingmall.admin.AdminMain;
+import com.swingmall.main.Page;
+import com.swingmall.main.ShopMain;
 
 public class RegistForm extends JPanel {
 	Product product;
@@ -37,7 +38,7 @@ public class RegistForm extends JPanel {
 	JTextField t_price;
 	JTextField t_filename;
 	JTextField t_detail;
-	JScrollPane s1; // 상세설명 스크롤
+	JScrollPane s1; // 상세설명 스크롤 ㅈ
 	JButton bt_regist;
 	JButton bt_list;
 	

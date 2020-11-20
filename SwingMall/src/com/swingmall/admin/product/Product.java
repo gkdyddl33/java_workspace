@@ -215,6 +215,6 @@ public class Product extends Page{
 	public void addRemoveContent(Component removeObj, Component addObj) {
 		this.remove(removeObj);// 제거될 자 - 인수로 받자
 		this.add(addObj);// 부착될 자
-		((JPanel)addObj).updateUI();
+		((JPanel)addObj).updateUI(); // 부착될자 갱신
 	}
 }

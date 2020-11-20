@@ -12,10 +12,13 @@ import javax.swing.JPanel;
 
 public class Page extends JPanel{
 
-	ShopMain shopMain;
+	private ShopMain shopMain;
 	
 	public Page(ShopMain shopMain) {
 		this.shopMain=shopMain;
 		this.setPreferredSize(new Dimension(ShopMain.WIDTH,ShopMain.HEIGHT-100));
+	}
+	public ShopMain getShopMain() {
+		return shopMain;
 	}
 }
