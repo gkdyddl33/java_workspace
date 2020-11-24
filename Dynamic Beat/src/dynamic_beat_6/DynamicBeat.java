@@ -20,12 +20,12 @@ public class DynamicBeat extends JFrame{
 	
 	// 게임시작 이미지 와 메인메뉴 이미지
 	private Image selectedImage = new ImageIcon(Main.class.getResource("../images/Mighty Love Start Image.jpg")).getImage();
-	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground(Title).jpg")).getImage();
+	private Image background = new ImageIcon(Main.class.getResource("../images/introBackground(Title).png")).getImage();
 	
 	private JLabel menuBar = new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));
 	
 	// 곡 Title 이미지
-	private Image titleImage = new ImageIcon(Main.class.getResource("../images/Mighty Love Title Image.jpg")).getImage();
+	private Image titleImage = new ImageIcon(Main.class.getResource("../images/Mighty Love Title Image.png")).getImage();
 	
 	// 버튼들 집합!
 	private ImageIcon exitButtonEnteredImage = new ImageIcon(Main.class.getResource("../images/exitButtonEntered.png"));
