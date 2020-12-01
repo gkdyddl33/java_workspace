@@ -81,6 +81,16 @@ public class DynamicBeat extends JFrame{
 	public static Game game;
 	
 	public DynamicBeat() {
+		// 곡 정보를 담자..
+		trackList.add(new Track("Mighty Love Title Image.png","Mighty Love Start Image.jpg",
+				"Mighty Love Game Image.jpg","Mighty Love Selected.mp3","Joakim Karud - Mighty Love.mp3","Joakim Karud - Mighty Love"));
+		
+		trackList.add(new Track("Wild Flower Title Image.png","Wild Flower Start Image.jpg",
+				"Wild Flower Game Image.jpg","Wild Flower Selected.mp3","Joakim Karud - Wild Flower.mp3","Joakim Karud - Wild Flower"));
+		
+		trackList.add(new Track("Energy Title Image.png","Energy Start Image.jpg",
+				"Energy Game Image.jpg","Energy Selected.mp3","Bensound - Energy.mp3","Bensound - Energy"));
+		
 		// 메뉴바가 보이지 않게 하기 위해
 		setUndecorated(true);
 		
@@ -98,18 +108,7 @@ public class DynamicBeat extends JFrame{
 		addKeyListener(new KeyListener());
 		
 		introMusic.start(); // 로드 되는 순간 음악나오게.
-		
-		// 곡 정보를 담자..
-		trackList.add(new Track("Mighty Love Title Image.png","Mighty Love Start Image.jpg",
-				"Mighty Love Game Image.jpg","Mighty Love Selected.mp3","Joakim Karud - Mighty Love.mp3","Joakim Karud - Mighty Love"));
-		
-		trackList.add(new Track("Wild Flower Title Image.png","Wild Flower Start Image.jpg",
-				"Wild Flower Game Image.jpg","Wild Flower Selected.mp3","Joakim Karud - Wild Flower.mp3","Joakim Karud - Wild Flower"));
-		
-		trackList.add(new Track("Energy Title Image.png","Energy Start Image.jpg",
-				"Energy Game Image.jpg","Energy Selected.mp3","Bensound - Energy.mp3","Bensound - Energy"));
-		
-		
+	
 		// -----> 버튼 아이콘 사이즈 조절해보기
 		exitButton.setBounds(1245, 0, 30, 30);
 		exitButton.setBorderPainted(false);
@@ -410,6 +409,11 @@ public class DynamicBeat extends JFrame{
 			game.screenDraw(g); // Game 클래스에 관리하고 있는 것을 따로 구분!!
 		}
 		paintComponents(g);	// 이미지를 스크린 이미지로 그려주는 것!
+		try {
+			Thread.sleep(5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.repaint();
 	}
 	
@@ -443,7 +447,7 @@ public class DynamicBeat extends JFrame{
 	
 	public void gameStart(int nowSelected,String difficulty) {
 		if(selectedMusic != null) {
-			selectedMusic.close();	// 현재 재생중 음악 닫기
+			selectedMusic.close();	// 현재 재생중 음악 닫기g
 		}
 		isMainScreen = false;	// 메인 화면이 아니다.
 		leftButton.setVisible(false);
@@ -454,9 +458,10 @@ public class DynamicBeat extends JFrame{
 				.getImage();
 		backButton.setVisible(true);
 		isGameScreen = true; // 게임시작
-		setFocusable(true); 		// 게임 창의 키보드 포커스 창이 맞춰짐
 		// 곡제목과 곡노래 가져오기
 		game = new Game(trackList.get(nowSelected).getTitleName(),difficulty, trackList.get(nowSelected).getGameMusic());
+		game.start();
+		setFocusable(true); 		// 게임 창의 키보드 포커스 창이 맞춰짐
 	}
 	
 	public void backMain() {
